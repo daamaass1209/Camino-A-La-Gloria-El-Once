@@ -7,7 +7,15 @@ const R = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
 const pick = a => a[R(0, a.length - 1)];
 const hue = s => [...s].reduce((a, c) => (a * 31 + c.charCodeAt(0)) % 360, 7);
 const crest = n => `<span class="cr" style="background:hsl(${hue(n)},50%,40%)">${n[0]}</span>`;
-const save = () => { try { localStorage.setItem('fm-lite', JSON.stringify(S)); } catch (e) {} };
+const save = () => {
+  try {
+    localStorage.setItem('fm-lite', JSON.stringify(S));
+  } catch (e) {}
+
+  if (typeof guardarNube === 'function') {
+    guardarNube();
+  }
+};
 const load = () => { try { return JSON.parse(localStorage.getItem('fm-lite')); } catch (e) { return null; } };
 function toast(m) {
   const t = $('#toast');
@@ -129,7 +137,8 @@ function entrenar(i) {
 function vHome() {
   return `<div class="hero"><div class="lg">Fútbol<br>Manager</div></div>` +
     (S.teams || load() ? `<button class="btn w" onclick="cont()">Continuar</button><br><br>` : '') +
-    `<button class="btn ${S.teams || load() ? 'alt' : ''} w" onclick="S.tab='new';render()">Nueva partida</button>`;
+    `<button class="btn ${S.teams || load() ? 'alt' : ''} w" onclick="S.tab='new';render()">Nueva partida</button>` +
+    `<br><br><button class="btn alt w" onclick="mostrarCuenta()">Cuenta / Supabase</button>`;
 }
 function vNew() {
   if (pend == null)

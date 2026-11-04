@@ -2,8 +2,8 @@
    Se carga DESPUÉS de script.js. Usa S, save(), toast(), fixtures() y render() de script.js.
    La clave "anon" puede ir aquí; la "service_role" NUNCA. */
 
-const SUPABASE_URL = 'PEGA_AQUI_TU_PROJECT_URL';
-const SUPABASE_KEY = 'PEGA_AQUI_TU_ANON_KEY';
+const SUPABASE_URL = 'https://vdbtreydwykbctcxvenn.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_tD2KriE1CuS9IvhlGZmwkw_3z-goYEG';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let cloudId = localStorage.getItem('fm-cloud-id');   // id de la partida en Supabase
@@ -63,4 +63,23 @@ async function borrarPartida(id) {
   const { error } = await sb.from('saves').delete().eq('id', id);
   if (error) return toast('No se pudo borrar');
   if (id === cloudId) { cloudId = null; localStorage.removeItem('fm-cloud-id'); }
+}
+function mostrarCuenta() {
+  const email = prompt('Introduce tu correo electrónico:');
+  if (!email) return;
+
+  const password = prompt('Introduce tu contraseña:');
+  if (!password) return;
+
+  const accion = confirm(
+    'Pulsa Aceptar para iniciar sesión.\nPulsa Cancelar para crear una cuenta.'
+  );
+
+  if (accion) {
+    entrar(email, password);
+  } else {
+    const username = prompt('Elige un nombre de usuario:');
+    if (!username) return;
+    registrar(email, password, username);
+  }
 }
